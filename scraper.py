@@ -109,7 +109,7 @@ def get_product_details(urls):
 df = pd.read_csv("list.csv")
 aProductUrl = []
 for code in df["Item Code"]:
-    aProductUrl.append("https://www.amazon.com/dp/"+code)
+    aProductUrl.append("https://www.amazon.com/-/en/dp/"+code)
     print(aProductUrl[-1])
 ListedItem = []
 filename = "AmazonList.csv"
