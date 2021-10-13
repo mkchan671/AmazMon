@@ -78,6 +78,7 @@ def get_product_details(urls):
             #soup = BeautifulSoup(page.content, "html5lib")
             #print(browser.page_source.encode(encoding='utf-8',errors='replace'))
             title = soup.find(id="productTitle")
+            #TODO added "newBuyBoxPrice" to id
             price = soup.find(id="priceblock_dealprice")
             if price is None:
                 price = soup.find(id="priceblock_ourprice")
