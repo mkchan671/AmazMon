@@ -82,6 +82,8 @@ def get_product_details(urls):
             price = soup.find(id="priceblock_dealprice")
             if price is None:
                 price = soup.find(id="priceblock_ourprice")
+                if price is None:
+                    price = soup.find(id="newBuyBoxPrice")
                 dList[itind]["deal"] = False
             if title is not None and price is not None:
                 dList[itind]["name"] = title.get_text().strip()
