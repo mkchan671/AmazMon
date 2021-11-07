@@ -61,29 +61,32 @@ def get_product_details(urls):
         details = None
     else:
         fireFoxOptions = webdriver.FirefoxOptions()
-        fireFoxOptions.set_headless()
-        browser = webdriver.Firefox(firefox_options=fireFoxOptions)
+        fireFoxOptions.headless = True
+        browser = webdriver.Firefox(options=fireFoxOptions)
         itind = 0
         #page = requests.get(_url, headers=headers)
         for _url in urls:
             r = browser.get(_url)
             delay = 5 # seconds
             try:
-                myElem = WebDriverWait(browser, delay).until(EC.presence_of_element_located((By.ID, 'priceblock_ourprice')))
+                myElem = WebDriverWait(browser, delay).until(EC.presence_of_element_located((By.ID, 'dp-container')))
                 print ("Page is ready!")
                 #print (myElem.text)
             except TimeoutException:
                 print ("Loading took too much time!")
+                continue
             soup = bs(browser.page_source.encode(encoding='utf-8',errors='replace'), "html.parser")
             #soup = BeautifulSoup(page.content, "html5lib")
             #print(browser.page_source.encode(encoding='utf-8',errors='replace'))
             title = soup.find(id="productTitle")
-            #TODO added "newBuyBoxPrice" to id
+            #TODO Check if it is deal price
             price = soup.find(id="priceblock_dealprice")
             if price is None:
                 price = soup.find(id="priceblock_ourprice")
                 if price is None:
                     price = soup.find(id="newBuyBoxPrice")
+                    if price is None:
+                        price = soup.find(class_="apexPriceToPay").find(class_="a-offscreen")
                 dList[itind]["deal"] = False
             if title is not None and price is not None:
                 dList[itind]["name"] = title.get_text().strip()
